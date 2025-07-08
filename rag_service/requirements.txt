@@ -1,0 +1,10 @@
+fastapi[standard]
+uvicorn
+chromadb
+mysql-connector-python
+python-dotenv
+pydantic
+ollama
+python-multipart
+redis
+aioredis

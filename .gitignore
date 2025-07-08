@@ -1,0 +1,23 @@
+# Docker
+.docker/
+docker-compose.override.yml
+
+# MySQL data
+mysql_data/
+
+# Environment variables
+.env
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db 
+venv/
+.history/
+rag_service/venv/
+__pycache__/

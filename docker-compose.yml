@@ -1,0 +1,70 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: scmspassword
+      DB_NAME: scms
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: scmspassword
+      MYSQL_DATABASE: scms
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./Database/scms.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11435:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  rag_service:
+    build:
+      context: ./rag_service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: scmspassword
+      DB_NAME: scms
+      OLLAMA_HOST: http://ollama:11434
+      CHROMA_PERSIST_DIR: /data/chroma
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    volumes:
+      - rag_data:/data
+      - chroma_data:/data/chroma
+    depends_on:
+      - db
+      - redis
+      - ollama
+
+volumes:
+  db_data:
+  redis_data:
+  rag_data:
+  chroma_data:
+  ollama_data:

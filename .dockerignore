@@ -1,0 +1,16 @@
+.git
+.gitignore
+.env
+*.md
+node_modules/
+vendor/
+rag_service/
+.idea/
+.vscode/
+*.log
+Database/
+docker-compose.yml
+Dockerfile
+README.md 
+.history/
+.venv/
